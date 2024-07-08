@@ -60,6 +60,13 @@ const init = async () => {
   console.log("connected to database");
   await createTables();
   console.log("created tables");
+  const [alex, taylor, book, game] = await Promise.all([
+    createUser({ username: "alex", password: "password" }),
+    createUser({ username: "taylor", password: "password1" }),
+    createProduct({ name: "book" }),
+    createProduct({ name: "game" }),
+  ]);
+  console.log("users and products seeded");
   const port = process.env.PORT || 3000;
   app.listen(port, () => console.log(`listening on port ${port}`));
 };
