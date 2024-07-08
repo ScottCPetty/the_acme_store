@@ -47,8 +47,22 @@ const createUser = async ({ username, password }) => {
   ]);
   return response.rows[0];
 };
-const fetchUsers = async () => {};
-const fetchProducts = async () => {};
+const fetchUsers = async () => {
+  const SQL = `
+    SELECT id, username
+    FROM users
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
+const fetchProducts = async () => {
+  const SQL = `
+    SELECT *
+    FROM products
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
 const createFavorite = async () => {};
 const fetchFavorites = async () => {};
 const destroyFavorites = async () => {};
