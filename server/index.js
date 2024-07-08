@@ -34,8 +34,26 @@ api.get("/api/users/:id/favorites", async (req, res, next) => {
     next(error);
   }
 });
-api.post("/api/users/:id/favorites", async (req, res, next) => {});
-api.delete("/api/users/:userId/favorites/:id", async (req, res, next) => {});
+api.post("/api/users/:id/favorites", async (req, res, next) => {
+  try {
+    res.status(201).send(
+      await createFavorite({
+        user_id: req.params.id,
+        product_id: req.body.product_id,
+      })
+    );
+  } catch (error) {
+    next(error);
+  }
+});
+api.delete("/api/users/:userId/favorites/:id", async (req, res, next) => {
+  try {
+    await destroyFavorites({ user_id: req.params.userId, id: req.params.id });
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});
 
 const init = async () => {
   await client.connect();
