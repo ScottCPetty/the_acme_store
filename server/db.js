@@ -8,16 +8,16 @@ const bcrypt = require("bcrypt");
 const createTables = async () => {
   const SQL = `
     DESTROY TABLE IF EXISTS favorites
-    DESTROY TABLE IF EXISTS users
     DESTROY TABLE IF EXISTS products
+    DESTROY TABLE IF EXISTS users
+    CREATE TABLE products(
+      id UUID PRIMARY KEY,
+      name VARCHAR(255) NOT NULL
+    );
     CREATE TABLE users(
       id UUID PRIMARY KEY,
       username VARCHAR(255) NOT NULL UNIQUE,
       password VARCHAR(255) NOT NULL
-    );
-    CREATE TABLE products(
-      id UUID PRIMARY KEY,
-      name VARCHAR(255) NOT NULL
     );
     CREATE TABLE favorites(
       id UUID PRIMARY KEY,
@@ -29,8 +29,24 @@ const createTables = async () => {
   await client.query(SQL);
 };
 
-const createProduct = async () => {};
-const createUser = async () => {};
+const createProduct = async ({ name }) => {
+  const SQL = `
+    INSERT INTO products(id, name) VALUES($1, $2) RETURNING *
+  `;
+  const response = await client.query(SQL, [uuid.v4(), name]);
+  return response.rows[0];
+};
+const createUser = async ({ username, password }) => {
+  const SQL = `
+    INSERT INTO users(id, username, password) VALUES($1, $2, $3) RETURNING *
+  `;
+  const response = await client.query(SQL, [
+    uuid.v4(),
+    username,
+    await bcrypt.hash(password, 5),
+  ]);
+  return response.rows[0];
+};
 const fetchUsers = async () => {};
 const fetchProducts = async () => {};
 const createFavorite = async () => {};

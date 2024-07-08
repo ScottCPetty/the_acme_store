@@ -11,7 +11,7 @@ const {
 } = require("./db.js");
 const express = require("express");
 const app = express();
-app.use(express.JSON);
+app.use(express.json());
 
 api.get("/api/users", async (req, res, next) => {});
 api.get("/api/products", async (req, res, next) => {});
