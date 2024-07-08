@@ -63,9 +63,30 @@ const fetchProducts = async () => {
   const response = await client.query(SQL);
   return response.rows;
 };
-const createFavorite = async () => {};
-const fetchFavorites = async () => {};
-const destroyFavorites = async () => {};
+const createFavorite = async (user_id, product_id) => {
+  const SQL = `
+    INSERT INTO favorites(id, product_id, user_id) VALUES ($1, $2, $3) RETURNING *
+  `;
+  const response = await client.query(SQL, [uuid.v4(), user_id, product_id]);
+  return response.rows[0];
+};
+const fetchFavorites = async (user_id) => {
+  const SQL = `
+    SELECT *
+    FROM favorites
+    WHERE user_id = $1
+  `;
+  const response = await client.query(SQL, [user_id]);
+  return response.rows;
+};
+const destroyFavorites = async ({ user_id, id }) => {
+  const SQL = `
+    DELETE
+    FROM favorites
+    WHERE user_id=$1 AND id=$2
+  `;
+  await client.query(SQL, [user_id, id]);
+};
 
 module.exports = {
   client,
