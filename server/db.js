@@ -4,3 +4,24 @@ const client = new pg.Client(
 );
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
+
+const createTables = async () => {};
+const createProduct = async () => {};
+const createUser = async () => {};
+const fetchUsers = async () => {};
+const fetchProducts = async () => {};
+const createFavorite = async () => {};
+const fetchFavorites = async () => {};
+const destroyFavorites = async () => {};
+
+module.exports = {
+  client,
+  createTables,
+  createProduct,
+  createUser,
+  fetchUsers,
+  fetchProducts,
+  createFavorite,
+  fetchFavorites,
+  destroyFavorites,
+};
