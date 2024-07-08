@@ -19,5 +19,10 @@ api.get("/api/users/:id/favorites", async (req, res, next) => {});
 api.post("/api/users/:id/favorites", async (req, res, next) => {});
 api.delete("/api/users/:userId/favorites/:id", async (req, res, next) => {});
 
-const init = async () => {};
+const init = async () => {
+  await client.connect();
+  console.log("connected to database");
+  await createTables();
+  console.log("created tables");
+};
 init();
